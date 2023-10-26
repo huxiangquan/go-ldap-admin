@@ -8,6 +8,7 @@ import (
 	"github.com/eryajf/go-ldap-admin/config"
 	"github.com/patrickmn/go-cache"
 
+	"crypto/tls"
 	"strconv"
 
 	"gopkg.in/gomail.v2"
@@ -33,6 +34,7 @@ func email(mailTo []string, subject string, body string) error {
 	newmail.SetBody("text/html", body)    //设置邮件正文
 
 	do := gomail.NewDialer(mailConn["host"], port, mailConn["user"], mailConn["pass"])
+	do.TLSConfig = &tls.Config{InsecureSkipVerify: true}
 	return do.DialAndSend(newmail)
 }
 
